@@ -1,0 +1,146 @@
+---
+title: "Heart"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load packages & set seed}
+library(caret)
+library(ggplot2)
+
+# set seed
+set.seed(123)
+```
+
+```{r set work directory and load data in R}
+heart <- read.csv('C:/Users/kinja/Desktop/HS 628/Assignments/hs628_assign2/heart.csv', encoding = "UTF-16", header = TRUE)
+```
+
+```{r}
+str(heart)
+```
+
+What is the data type of heart?
+Mixed data
+
+```{r}
+heart
+```
+
+```{r}
+heart <- read.csv('heart.csv', encoding = "UTF-16", header = TRUE, na.string="?")
+```
+
+
+```{r summary of data}
+summary(heart)
+```
+
+```{r}
+heart <- read.csv('heart.csv', encoding = "UTF-16", header = TRUE, na.string=c("?", "-9"))
+```
+
+```{r}
+summary(heart)
+```
+
+```{r}
+str(heart)
+summary(heart)
+```
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+```{r}
+fit_num_all = lm(num ~ ., data = heart)
+summary(fit_num_all)
+```
+
+
+```{r}
+summary(na.omit(heart))
+nrow(na.omit(heart))
+```
+
+```{r}
+colnames(heart)
+```
+
+
+```{r}
+fit_num_1 = lm(num ~ age +sex +cp +trestbps +chol +fbs +restecg +thalach +exang +oldpeak +slope +thal, data = heart)
+summary(fit_num_1)
+```
+
+
+
+```{r}
+fit_num_2 = lm(num ~ age +sex +cp +trestbps +chol +fbs +restecg +thalach +exang +oldpeak +slope, data = heart)
+summary(fit_num_2)
+```
+
+
+
+```{r}
+heart$cp <- as.factor(heart$cp)
+heart$restecg <- as.factor(heart$restecg)
+heart$slope <- as.factor(heart$slope)
+# heart$thal <- as.factor(heart$thal)
+```
+
+
+```{r}
+fit_num_3 = lm(num ~ age +sex +cp +trestbps +chol +fbs +restecg +thalach +exang +oldpeak +slope, data = heart)
+summary(fit_num_3)
+```
+
+```{r}
+heart$sex <- as.factor(heart$sex)
+heart$fbs <- as.factor(heart$fbs)
+heart$exang <- as.factor(heart$exang)
+str(heart)
+```
+
+
+```{r}
+fit_num_4 = lm(num ~ age +sex +cp +trestbps +chol +fbs +restecg +thalach +exang +oldpeak +slope, data = heart)
+summary(fit_num_4)
+```
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
