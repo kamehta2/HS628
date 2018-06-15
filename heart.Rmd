@@ -15,7 +15,7 @@ heart <- read.csv("heart.csv", header = TRUE, na.strings = "?")
 summary(heart)
 str(heart)
 ```
-
+1. heart is a dataframe
 ```{r}
 heart$trestbps[heart$trestbps == -9.0] <- NA
 heart$fbs[heart$fbs == -9] <- NA
@@ -29,29 +29,32 @@ heart$thal[heart$thal == -9] <- NA
 summary(heart)
 ```
 
-
 ```{r linear regression model all}
 fit_num_all <- lm(num ~ ., data = heart)
 summary(fit_num_all)
 ```
-
+293 lines were omitted due to missing values. 
 ```{r}
 summary(na.omit(heart))
+```
+4. There was a lot of missing data in various variables, hence when all rows with NAs were omitted, only 1 row remained
+```{r}
 nrow(na.omit(heart))
 ```
-
-
+4. Only the 1st row had complete data.
 ```{r linear regression model 1}
 fit_num_1 <- lm(num ~ age + sex + cp + trestbps + chol + fbs + restecg + thalach + exang + oldpeak + slope + thal, data = heart)
 summary(fit_num_1)
 ```
-
+5. Only 10 observations were used in this model. 
+The small number of observations would make it bad for a 13D hyperplane
 ```{r linear regression model 2}
 fit_num_2 <- lm(num ~ age + sex + cp + trestbps + chol + fbs + restecg + thalach + exang + oldpeak + slope, data = heart)
 summary(fit_num_2)
 ```
+6. 95 observations were used for this linear model. 
 
-Examine the descriptions of predictor variables below to see which are categorical (can hold only a discrete number of values). List the categorical variables that are boolean (can hold only two values). List the other categorical variables (those that can hold more than two values).What type did R assign to the categorical variables? Modify the non-boolean categorical predictorvariables(this does not include num)so they are represented as factor variables.
+7. Examine the descriptions of predictor variables below to see which are categorical (can hold only a discrete number of values). List the categorical variables that are boolean (can hold only two values). List the other categorical variables (those that can hold more than two values).What type did R assign to the categorical variables? Modify the non-boolean categorical predictorvariables(this does not include num)so they are represented as factor variables.
 
 Boolean: sex, fbs, exang
 Categorical: cp, restecg, slope, thal
@@ -67,6 +70,7 @@ heart$thal <- factor(heart$thal)
 fit_num_3 <- lm(num ~ age + sex + cp + trestbps + chol + fbs + restecg + thalach + exang + oldpeak + slope, data = heart)
 summary(fit_num_3)
 ```
+8. slope 2 became more significant and trestbps became less significant. 
 
 ```{r changed boolean categorical variables to factors}
 heart$sex <- factor(heart$sex)
@@ -78,6 +82,7 @@ heart$exang <- factor(heart$exang)
 fit_num_4 <- lm(num ~ age + sex + cp + trestbps + chol + fbs + restecg + thalach + exang + oldpeak + slope, data = heart)
 summary(fit_num_4)
 ```
+9. The fit was the same with the previous linear model. 
 
 ```{r making a new variable}
 heart$num2[heart$num == 0] <- 0
@@ -93,7 +98,7 @@ summary(fit_num_slope_oldpeak_sex)
 fit_num2_slope_oldpeak_sex <- lm(num2 ~ slope + oldpeak + sex, data = heart)
 summary(fit_num_slope_oldpeak_sex)
 ```
-
+12. R2 remained the same. 
 ```{r plotting}
 plot(fit_num_1, 1) 
 plot(fit_num_slope_oldpeak_sex, 1)
