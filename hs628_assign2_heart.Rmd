@@ -1,46 +1,85 @@
 ---
 title: "Heart"
+author: "Kinjal Mehta"
+date: "June 7, 2018"
 output:
   html_document: default
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r load packages & set seed}
-library(caret)
-library(ggplot2)
-
+```{r set seed}
 # set seed
 set.seed(123)
 ```
 
-```{r set work directory and load data in R}
-heart <- read.csv('C:/Users/kinja/Desktop/HS 628/Assignments/hs628_assign2/heart.csv', encoding = "UTF-16", header = TRUE)
+```{r set work directory and read the data}
+setwd("C:/Users/kinja/Desktop/HS 628/Assignments/hs628_assign2_Data_Cleaning_and_Visualization_in_R/")
+heart <- read.csv("heart.csv", encoding = "UTF-16", header = TRUE)
+```
+
+```{r}
+class(heart)
+str(heart)
+```
+
+The data type of heart is data.frame.
+
+```{r}
+table(heart$age)
+table(heart$trestbps)
+table(heart$chol)
+```
+
+
+
+```{r}
+table(heart$oldpeak)
+table(heart$thalach)
+table(heart$ca)
+table(heart$num)
+```
+
+
+```{r}
+table(heart$cp)
+table(heart$restecg)
+table(heart$slope)
+table(heart$thal)
+```
+
+
+```{r}
+table(heart$sex)
+table(heart$fbs)
+table(heart$exang)
+```
+
+
+```{r}
+heart
+```
+
+
+
+```{r correct variable type}
+heart <- read.csv('heart.csv', encoding = "UTF-16", header = TRUE, na.string="?")
+```
+
+
+
+```{r summary of the data}
+summary(heart)
 ```
 
 ```{r}
 str(heart)
 ```
 
-What is the data type of heart?
-Mixed data
+Write a couple of sentences on your observations.
 
-```{r}
-heart
-```
-
-```{r}
-heart <- read.csv('heart.csv', encoding = "UTF-16", header = TRUE, na.string="?")
-```
-
-
-```{r summary of data}
-summary(heart)
-```
-
-```{r}
+```{r missing data}
 heart <- read.csv('heart.csv', encoding = "UTF-16", header = TRUE, na.string=c("?", "-9"))
 ```
 
@@ -50,17 +89,8 @@ summary(heart)
 
 ```{r}
 str(heart)
-summary(heart)
 ```
 
-
-```{r}
-
-```
-
-```{r}
-
-```
 
 
 ```{r}
@@ -69,10 +99,21 @@ summary(fit_num_all)
 ```
 
 
+
 ```{r}
 summary(na.omit(heart))
+```
+
+```{r}
 nrow(na.omit(heart))
 ```
+
+How many observations were deleted due to
+missingness?
+
+How many are left in the model?
+
+Could this many points (observations) determine even a 2D (2-dimensional) line?
 
 ```{r}
 colnames(heart)
@@ -84,29 +125,45 @@ fit_num_1 = lm(num ~ age +sex +cp +trestbps +chol +fbs +restecg +thalach +exang 
 summary(fit_num_1)
 ```
 
-
+How many observations are included in the
+model? Could this many points determine a 13D hyperplane?
 
 ```{r}
 fit_num_2 = lm(num ~ age +sex +cp +trestbps +chol +fbs +restecg +thalach +exang +oldpeak +slope, data = heart)
 summary(fit_num_2)
 ```
 
+How many observations are included in the
+model? Could this many points determine a 12D hyperplane?
 
-
-```{r}
+```{r Modify the non-boolean categorical predictor variables}
 heart$cp <- as.factor(heart$cp)
 heart$restecg <- as.factor(heart$restecg)
 heart$slope <- as.factor(heart$slope)
-# heart$thal <- as.factor(heart$thal)
+heart$thal <- as.factor(heart$thal)
+str(heart)
 ```
 
+List the categorical variables that are
+boolean. 
 
-```{r}
+List the other categorical variables (those that can hold more than two values).
+num, 
+
+What type did R assign to the categorical variables?
+
+```{r }
 fit_num_3 = lm(num ~ age +sex +cp +trestbps +chol +fbs +restecg +thalach +exang +oldpeak +slope, data = heart)
 summary(fit_num_3)
 ```
 
-```{r}
+Execute a summary of fit_num_3 & compare it to your summary of fit_num_2, which has 11 predictor variables with estimates of slopes in the fitted model.
+
+How has the list of fitted predictor variables changed in fit_num_3?
+
+How has the fit of the significant variables changed?
+
+```{r Modify the boolean categorical variables}
 heart$sex <- as.factor(heart$sex)
 heart$fbs <- as.factor(heart$fbs)
 heart$exang <- as.factor(heart$exang)
@@ -119,28 +176,43 @@ fit_num_4 = lm(num ~ age +sex +cp +trestbps +chol +fbs +restecg +thalach +exang 
 summary(fit_num_4)
 ```
 
+Execute a summary of fit_num_4 & compare it to your summary of fit_num_3.
 
+How has the list of fitted predictor variables changed in fit_num_4?
 
 ```{r}
-
+heart$num2[heart$num == 0] <- 0
+heart$num2[heart$num != 0] <- 1
 ```
 
 
 
 ```{r}
-
+fit_num_slope_oldpeak_sex <- lm(num ~ slope + oldpeak + sex, data = heart)
+summary(fit_num_slope_oldpeak_sex)
 ```
 
 
 
 ```{r}
-
+fit_num2_slope_oldpeak_sex <- lm(num2 ~ slope + oldpeak + sex, data = heart)
+summary(fit_num2_slope_oldpeak_sex)
 ```
 
+What is the equation of the fitted line for fit_num2_slope_oldpeak_sex?
 
+How does the adjusted R2 of fit_num2_slope_oldpeak_sex compare with the
+adjusted R2 of fit_num_slope_oldpeak_sex?
+
+What does this indicate to you?
 
 ```{r}
-
+plot(fit_num_1, 1)
+plot(fit_num_slope_oldpeak_sex, 1)
+plot(fit_num2_slope_oldpeak_sex, 1)
 ```
 
+The plots produced by these commands indicate problems with these linear regression models. (See Assumption (iv) normality of the error distribution)
+
+Write a couple of sentences identifying the problems.
 
