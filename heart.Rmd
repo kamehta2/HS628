@@ -16,6 +16,8 @@ summary(heart)
 str(heart)
 ```
 1. heart is a dataframe
+2. Because of the way the heart was read in, all the variables were read in as floats. 
+3. The missing values were -9. So I replaced the -9 with NAs. 
 ```{r}
 heart$trestbps[heart$trestbps == -9.0] <- NA
 heart$fbs[heart$fbs == -9] <- NA
@@ -33,11 +35,11 @@ summary(heart)
 fit_num_all <- lm(num ~ ., data = heart)
 summary(fit_num_all)
 ```
-293 lines were omitted due to missing values. 
+
 ```{r}
 summary(na.omit(heart))
 ```
-4. There was a lot of missing data in various variables, hence when all rows with NAs were omitted, only 1 row remained
+4. There was a lot of missing data in various variables, hence when all rows with NAs were omitted, only 1 row remained. Only one observation was used to fit the model. One observation cannot determin a 2D line. 
 ```{r}
 nrow(na.omit(heart))
 ```
